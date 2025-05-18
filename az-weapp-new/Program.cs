@@ -1,5 +1,14 @@
+using az_weapp_new.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+
 var builder = WebApplication.CreateBuilder(args);
 
+var connectionString = builder.Configuration.GetConnectionString("AzureSqlConnection");
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString, sqlOptions =>
+{
+    sqlOptions.EnableRetryOnFailure();
+}));
 // Add services to the container.
 builder.Services.AddRazorPages();
 
